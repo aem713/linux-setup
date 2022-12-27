@@ -11,4 +11,4 @@ https://launcher.mojang.com/download/Minecraft.deb
 https://zoom.us/client/5.13.0.599/zoom_amd64.deb
 
 # VS Code (Check latest)
-https://go.microsoft.com/fwlink/?LinkID=760868
+https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64

@@ -17,7 +17,7 @@ mkdir ~/work
 sudo apt install -y vim v4l2loopback-dkms ffmpeg obs-studio gimp kdenlive spotify-client git gnuradio
 
 # 7) Download all needed .deb files
-wget -i deb.txt
+wget -ci deb.txt
 
 # 8) Install all .deb files
 for file in *.deb; do
