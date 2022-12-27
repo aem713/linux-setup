@@ -14,7 +14,7 @@ sudo apt update && sudo apt upgrade -y
 mkdir ~/work
 
 # 6) Install all needed packages
-sudo apt install -y vim v4l2loopback-dkms ffmpeg obs-studio gimp kdenlive spotify-client git gnuradio
+sudo apt install -y vim v4l2loopback-dkms ffmpeg obs-studio gimp shotcut spotify-client git gnuradio gparted
 
 # 7) Download all needed .deb files
 wget -ci deb.txt
