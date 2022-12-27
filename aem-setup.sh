@@ -32,7 +32,7 @@ rm *.deb
 if [ -e ~/.bash_aliases ]; then
     echo "File ~/.bash_aliases already exists!"
 else
-    cat > ~/.bash_aliases <<EOF
+    cat << 'EOF' > ~/.bash_aliases
 :() { clear $@ && pwd && ls; }
 cl() { cd $@ && ls; }
 ck () { cd $@ && clear && ls; }
