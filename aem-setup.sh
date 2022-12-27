@@ -17,7 +17,7 @@ mkdir ~/work
 sudo apt install -y vim v4l2loopback-dkms ffmpeg obs-studio gimp kdenlive spotify-client git gnuradio
 
 # 7) Download all needed .deb files
-wget -i /media/*/*/linux-quickstart/deb.txt
+wget -i deb.txt
 
 # 8) Install all .deb files
 for file in *.deb; do
@@ -54,5 +54,3 @@ if [ egrep -c '(vmx|svm)' /proc/cpuinfo -ge 0 ]; then
 else
     echo "Virtualization is not enabled in UEFI. Either that or I'm bad at bash scripting"
 fi
-
-
