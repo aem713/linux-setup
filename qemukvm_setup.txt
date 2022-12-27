@@ -1,0 +1,153 @@
+ChrisTitus (https://www.youtube.com/watch?v=6KqqNsnkDlQ)
+1) Set up QEMU-KVM (https://christitus.com/vm-setup-in-linux/)
+    1) egrep -c '(vmx|svm)' /proc/cpuinfo
+    2) sudo apt install qemu-kvm qemu-system qemu-utils python3 python3-pip libvirt-clients libvirt-daemon-system bridge-utils virtinst libvirt-daemon virt-manager -y
+    3) sudo systemctl status libvirtd.service (Verify that libvirtd service is started)
+    4) sudo virsh net-start default (Network default started)
+    5) sudo virsh net-autostart default (Network default marked as autostarted)
+    6) sudo virsh net-list --all (Check status)
+    7) sudo usermod -aG libvirt $USER (Add User to libvirt to Allow Access to VMs)
+       sudo usermod -aG libvirt-qemu $USER
+       sudo usermod -aG kvm $USER
+       sudo usermod -aG input $USER
+       sudo usermod -aG disk $USER
+2) Setup VM (https://christitus.com/windows-inside-linux/)
+    1) Pick the iso
+    2) Pick the RAM and CPUs
+    3) Pick the drive to run off of (Try to do partition passthrough)
+    4) Open and install, then shutdown
+    5) Download the VirtIO driver from: https://pve.proxmox.com/wiki/Windows_VirtIO_Drivers
+        1) Change SATA CDROM 1 to this new iso
+        2) Start machine and run virtio-win-guest-tools.exe in Windows
+    6) Change Video to Virtio
+    7) Add Hardware > Channel > Name: org.qemu.guest_agent.0
+
+Mutahar (https://www.youtube.com/watch?v=h7SG7ccjn-g)
+1) Set up QEMU-KVM
+    1) sudo apt install qemu libvirt ovmf virt-manager
+    2) sudo systemctl enable libvirtd.service (Enables virtualization tools to start as Linux is started)
+    3) sudo systemctl start libvirtd.service
+    4) sudo systemctl enable virtlogd.socket
+    5) sudo systemctl start virtlogd.socket
+    6) sudo virsh net-start default
+    7) sudo virsh net-autostart default
+2) Setup VM (virt-manager)
+    1) Choose iso
+    2) Choose RAM and CPUs
+    3) Create disk image
+    4) Customize configuration before install
+        1) Download Stable virtio-win.iso from: https://www.youtube.com/redirect?event=video_description&redir_token=QUFFLUhqbFk2Y203dFN5ekZDNDZfODdlN29Ca0ExckVQZ3xBQ3Jtc0tsUXN4QW1zY2x4QU8wWC1oVGQ1MVpIcnFVLU10dW9oanlmSHZqZW5GVjhaLWpueVVfOVBKa0VkVGFBQ3NVcGxZT1o1OTZfQVhUdjhvZDlCRGpudkU1Smg4VHdET29KTVU5V0UxMlhhOTBNMzJUNHg2MA&q=https%3A%2F%2Fdocs.fedoraproject.org%2Fen-US%2Fquick-docs%2Fcreating-windows-virtual-machines-using-virtio-drivers%2F&v=h7SG7ccjn-g
+        2) Overview > Chipset: Q35, Firmware: UEFI x86_64: /usr/share/ovmf/x64/OVMF_CODE.fd
+        3) CPUs > Manually set topology to Sockets: 1, Cores: 8, Threads: 2 (Can one less than max)
+        4) SATA DISK 1 > Disk bus: VirtIO
+        5) Add Hardware > Storage > Select or create custom: virtio-win.iso
+            1) Set Device type: CDROM device, Bus type: SATA
+
+Mental Outlaw (https://www.youtube.com/watch?v=wxxP39cNJOs)
+1) Set up QEMU-KVM
+    1) sudo apt install qemu virt-manager virt-viewer dnsmasq vde2 bridge-utils openbsd-netcat libguestfs
+    2) sudo apt install libvirt-openrc (For non systemd)
+    3) sudo rc-service libvirtd start
+    4) sudo rc-update add libvirtd
+    5) sudo vim /etc/libvirt/libvirtd.conf
+        1) unix_sock_group = "libvirt"
+        2) unix_sock_ro_perms = "0777"
+        3) unix_sock_rw_perms = "0770"
+    6) sudo usermod -aG libvirt $USER (To apply this update, logout or restart)
+    7) sudo rc-service libvirtd restart
+2) Setup VM (virt-manager)
+    1) Connect to QEMU/KVM if not already connected 
+    2) Edit > Preferences > Check Enable XML editing
+    3) Edit > Connection Details Ensure that virtual network is active and has NAT forwarding
+    4) Choose iso
+    5) Choose RAM and CPUs
+    6) Create disk image
+    7) Customize configuration before install
+        1) Delete the following lines: (Makes cpu usage reduce)
+            1) <timer name="rtc" tickpolicy="catchup"/>
+            2) <timer name="pit" tickpolicy="delay"/>
+        2) Change the following to:
+            1) <timer name="hpet" present="yes"/>
+        3) CPUs > Topology > Sockets: 1, Cores: 8, Threads: 2
+        4) SATA Disk 1 > Disk bus: VirtIO
+        5) NIC > Device model: virtio
+        6) Download virtio driver: https://www.youtube.com/redirect?event=video_description&redir_token=QUFFLUhqbFh2aGRBUFVvYlRBZTh5MWlxcW5PTUR5Ql9DUXxBQ3Jtc0tuSFZYOHU1VGNTX0RYWmxuYmttbTlPSVVEM2FvRnlWQ3pQeGlkQWNjTGRzTTdBWGgyM3FGLTJlWk1aVmM0Q3VqaURxb0ZVQi15N0RLT084MUNIZGVKeVRtNEpKYnFiX2lkbzF3bDB3VkVZN3Ayd2lyNA&q=https%3A%2F%2Ffedorapeople.org%2Fgroups%2Fvirt%2Fvirtio-win%2Fdirect-downloads%2Farchive-virtio%2Fvirtio-win-0.1.215-2%2F&v=wxxP39cNJOs
+            1) Add Hardware > Storage > Device type: CDROM device, Bus type: SATA, Apply
+            2) Source path: virtio-win.iso
+        7) Begin Installation
+
+Octetz (https://joshrosso.com/docs/2020/2020-05-06-linux-hypervisor-setup/)
+1) Set up QEMU-KVM
+    1) sudo apt install qemu libvirt virt-manager virt-install virt-viewer dnsmasq dhclient dmidecode ebtables bridge-utils openbsd-netcat
+    2) Change permissions
+        1) sudo cp -rv /etc/libvirt/libvirt.conf ~/.config/libvirt/ && sudo chown ${YOURUSER}:${YOURGROUP} ~/.config/libvirt/libvirt.conf (virsh uses qemu:///session by default. To ensure all client utilities default to qemu:///system, run this to add config to .config directory)
+        2) Add user to polkit (?)
+        3) sudo systemctl start libvirtd (Starts libvirt daemon)
+        4) mkdir /var/lib/libvirt/isos (Optionally create a directory to place isos in) 
+        5) sudo wget -P /var/lib/libvirt/isos https://mirrors.mit.edu/ubuntu-releases/18.04.4/ubuntu-18.04.4-live-server-amd64.iso (installs iso to preferred directory)
+2) Setup VM 
+    1) Choose iso
+        1) Add a new pool "isos" with target path /var/lib/libvirt/isos
+        2) Select iso
+    2) Finish setting up VM
+    3) Once installed, you can ssh to guest based on its assigned IP address
+3) Create a VM using CLI
+    1) The equivalent to above is as follows:
+        1) virt-install \
+            --name ubuntu1804 \
+            --ram 2048 \
+            --disk path=/var/lib/libvirt/images/u19.qcow2,size=8 \
+            --vcpus 2 \
+            --os-type linux \
+            --os-variant generic \
+            --console pty,target_type=serial \
+            --cdrom /var/lib/libvirt/isos/ubuntu-18.04.4-live-server-amd64.iso
+4) Clone a VM
+    1) virt-clone \
+        --original ubuntu18.04 \
+        --name cloned-ubuntu \
+        --file /var/lib/libvirt/images/cu.qcow2
+
+KVM Tutorial (https://www.tecmint.com/install-and-configure-kvm-in-linux/)
+1) KVM Installation and Deployment
+    1) grep -e 'svm' /proc/cpuinfo
+    2) lsmod | grep kvm (Ensure that KVM modules are loaded in the kernel)
+    3) sudo apt qemu-kvm qemu-img (user-level KVM and disk image manager)
+    4) sudo apt install virt-manager libvirt-client virt-install libvirt (GUI tool, CLI tool virsh to administer virtual environment, allow creation of VMs from CLI, Provides server and host side libraries for interacting with hypervisors and host systems)
+    5) systemctl restart libvirtd
+    6) systemctl status libvirtd (Check the daemon)
+2) Create VMs using KVM
+    1) Set the stuff up
+
+Crazy Proxmox stuff: https://pve.proxmox.com/wiki/Qemu/KVM_Virtual_Machines
+
+Set up a Shared Folder between KVM Host and Guest: https://ostechnix.com/setup-a-shared-folder-between-kvm-host-and-guest/
+
+Ubuntu
+qemu-kvm
+qemu-system
+qemu-utils
+python3
+python3-pip
+libvirt-clients
+libvirt-daemon-system
+bridge-utils (3)
+virtinst
+libvirt-daemon
+virt-manager (4)
+
+Arch
+qemu (3)
+libvirt (2)
+ovmf
+
+virt-viewer (2)
+dnsmasq (2)
+vde2
+openbsd-netcat (2)
+libguestfs
+
+virt-install
+dhclient
+dmidecode
+ebtables
