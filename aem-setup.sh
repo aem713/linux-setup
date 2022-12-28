@@ -21,7 +21,7 @@ mkdir ~/work
 sudo nala install -y vim neofetch v4l2loopback-dkms ffmpeg obs-studio gimp shotcut spotify-client git gnuradio gparted
 
 # 8) Download all needed .deb files
-wget -ci --content-disposition deb.txt
+wget -c --content-disposition -i deb.txt
 
 # 9) Install all .deb files
 for file in *.deb; do

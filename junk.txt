@@ -1,3 +1,0 @@
-https://launcher.mojang.com/download/Minecraft.deb
-https://github.com/OrangeDrangon/android-messages-desktop/releases/download/v5.4.0/Android.Messages-v5.4.0-linux-amd64.deb
-
