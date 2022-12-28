@@ -46,7 +46,6 @@ fi
 # 12) Set up QEMU-KVM
 if [ $(egrep -c '(vmx|svm)' /proc/cpuinfo) -gt 0 ]; then
     sudo nala install -y qemu-kvm qemu-system qemu-utils python3 python3-pip libvirt-clients libvirt-daemon-system bridge-utils virtinst libvirt-daemon virt-manager
-    sudo systemctl status libvirtd.service
     sudo virsh net-start default
     sudo virsh net-autostart default
     sudo virsh net-list --all
