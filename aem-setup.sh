@@ -6,6 +6,9 @@
 #       xrandr --output <monitor name> --scale 0.80x0.80
 #   2) Increase Trackpad speed (I don't care) 
 #   3) Switch to Local Mirror in Update Manager
+#
+# Firefox Settings
+#   1) Install UBlock Origin and Video Speed Controller (And change VSC settings)
 
 # 4) Install and set up Nala
 sudo apt install nala -y

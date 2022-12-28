@@ -151,3 +151,22 @@ virt-install
 dhclient
 dmidecode
 ebtables
+
+aem KVM Guide
+1) Download the desired win10.iso and the latest stable virtio-win.iso
+2) Create a new VM
+3) Select the win10.iso
+4) Allocate 16 GiB of RAM (out of 32 GiB) and 14 CPUs out of 16 vCPUs
+5) Create a qcow2 file with 128 GiB of memory
+6) Customize configuration before install
+    1) CPUs > Manually set CPU topology > Sockets: 1, Cores: 7, Threads: 2
+    2) Add Hardware > Storage > Select or create custom storage > Select virtio-win.iso > Device type: CDROM
+7) Begin Installation
+    1) Install Windows
+    2) Open VirtIO drive loaded as CDROM2 and run virtio-win-guest-tools.exe
+    3) After it is finished, shut down
+8) Show virtual hardware details
+    1) Remove CDROM1 (win10.iso) and the CDROM2 (virtio-win.iso)
+    2) NIC :eec6eb > Device model: virtio
+    3) Video QXL > Model: Virtio
+    4) Add Hardware > Channel > Name: org.qemu.guest_agent.0
