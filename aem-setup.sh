@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Linux Mint settings
 #   1) Set fractional scaling (Doesn't work)
@@ -7,28 +7,32 @@
 #   2) Increase Trackpad speed (I don't care) 
 #   3) Switch to Local Mirror in Update Manager
 
-# 4) Update and Upgrade system
-sudo apt update && sudo apt upgrade -y
+# 4) Install and set up Nala
+sudo apt install nala -y
+printf '1 2 3 4\ny\n' | sudo nala fetch
 
-# 5) Create work directory
+# 5) Update and Upgrade system
+sudo nala upgrade -y
+
+# 6) Create work directory
 mkdir ~/work
 
-# 6) Install all needed packages
-sudo apt install -y vim v4l2loopback-dkms ffmpeg obs-studio gimp shotcut spotify-client git gnuradio gparted
+# 7) Install all needed packages
+sudo nala install -y vim neofetch v4l2loopback-dkms ffmpeg obs-studio gimp shotcut spotify-client git gnuradio gparted
 
-# 7) Download all needed .deb files
-wget -ci deb.txt
+# 8) Download all needed .deb files
+wget -ci --content-disposition deb.txt
 
-# 8) Install all .deb files
+# 9) Install all .deb files
 for file in *.deb; do
     [ -f "$file" ] || continue
     sudo gdebi $file --n;
 done
 
-# 9) Delete all .deb files
+# 10) Delete all .deb files
 rm *.deb
 
-# 10) Create .bash_aliases file
+# 11) Create .bash_aliases file
 if [ -e ~/.bash_aliases ]; then
     echo "File ~/.bash_aliases already exists!"
 else
@@ -39,9 +43,9 @@ ck () { cd $@ && clear && ls; }
 EOF
 fi
 
-# 11) Set up QEMU-KVM
-if [ egrep -c '(vmx|svm)' /proc/cpuinfo -ge 0 ]; then
-    sudo apt install -y qemu-kvm qemu-system qemu-utils python3 python3-pip libvirt-clients libvirt-daemon-system bridge-utils virtinst libvirt-daemon virt-manager
+# 12) Set up QEMU-KVM
+if [ $(egrep -c '(vmx|svm)' /proc/cpuinfo) -gt 0 ]; then
+    sudo nala install -y qemu-kvm qemu-system qemu-utils python3 python3-pip libvirt-clients libvirt-daemon-system bridge-utils virtinst libvirt-daemon virt-manager
     sudo systemctl status libvirtd.service
     sudo virsh net-start default
     sudo virsh net-autostart default
@@ -52,5 +56,5 @@ if [ egrep -c '(vmx|svm)' /proc/cpuinfo -ge 0 ]; then
     sudo usermod -aG input $USER
     sudo usermod -aG disk $USER
 else
-    echo "Virtualization is not enabled in UEFI. Either that or I'm bad at bash scripting"
+    echo "Virtualization is not enabled in UEFI"
 fi

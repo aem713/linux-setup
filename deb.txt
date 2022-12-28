@@ -1,5 +1,5 @@
 # Discord
-https://discord.com/api/download?platform=linux&format=deb
+"https://discord.com/api/download?platform=linux&format=deb"
 
 # Android-Messages-Desktop
 https://github.com/OrangeDrangon/android-messages-desktop/releases/download/v5.4.0/Android.Messages-v5.4.0-linux-amd64.deb
@@ -11,4 +11,4 @@ https://launcher.mojang.com/download/Minecraft.deb
 https://zoom.us/client/5.13.0.599/zoom_amd64.deb
 
 # VS Code (Check latest)
-https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64
+"https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64"
