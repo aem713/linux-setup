@@ -1,2 +1,86 @@
 BlandManStudios (https://www.youtube.com/watch?v=eTWf5D092VY)
-Do everything in qemukvm_guides.txt first
+risingprismtv wiki (https://gitlab.com/risingprismtv/single-gpu-passthrough/-/wikis/home)
+1) Do everything in qemukvm_guides.txt first
+2) Set up IOMMU
+    1) $ vim /etc/default/grub 
+        1) GRUB_CMDLINE_LINUX_DEFAULT="... amd_iommu=on iommu=pt video=efifb:off..."
+    2) Update Grub Config
+        1) $ sudo grub2-mkconfig -o /etc/grub2.cfg (Fedora?)
+        2) $ sudo update-grub (Ubuntu: Stub for: sudo grub-mkconfig -o /boot/grub/grub.cfg)
+        3) Reboot system to apply changes (?)
+    3) Verify IOMMU
+        1) $ dmesg | grep IOMMU
+            1) Should say AMD-Vi: AMD IOMMUv2 loaded and initialized
+    4) Find what the GPU device is:
+        1) Run the following script to list IOMMU groups:
+            #!/bin/bash
+            shopt -s nullglob
+            for g in /sys/kernel/iommu_groups/*; do
+                echo "IOMMU Group ${g##*/}:"
+                for d in $g/devices/*; do
+                    echo -e "\t$(lspci -nns ${d##*/})"
+                done;
+            done;
+        2) Determine which IOMMU groups correspond to the GPU
+            IOMMU Group 15:
+	            04:00.0 VGA compatible controller [0300]: Advanced Micro Devices, Inc. [AMD/ATI] Rembrandt [1002:1681] (rev d1)
+            IOMMU Group 16:
+	            04:00.1 Audio device [0403]: Advanced Micro Devices, Inc. [AMD/ATI] Device [1002:1640]
+3) Configuration of libvirt
+    1) $ sudo apt install qemu-system-x86 libvirt-clients libvirt-daemon-system libvirt-daemon-config-network bridge-utils virt-manager ovmf
+    2) $ sudo vim /etc/libvirt/libvirtd.conf
+        1) Uncomment the following lines:
+            unix_sock_group = 'libvirt'
+            unix_sock_rw_perms = '0770'
+        2) Add these at the end of the file (for logs and troubleshooting)
+            log_filters="3:qemu 1:libvirt"
+            log_outputs="2:file:/var/log/libvirt/libvirtd.log"
+    3) Add user to libvirt group
+        $ sudo usermod -a -G kvm, libvirt $(whoami)
+        $ sudo systemctl enable libvirtd
+        $ sudo systemctl start libvirtd
+        $ sudo groups $(whoami)
+    4) Modify qemu.conf ($ sudo vim /etc/libvirt/qemu.conf)
+        1) Uncomment the following lines:
+            user = 'root'
+            group = 'root'
+        2) Replace root with your username
+            user = 'aem'
+            group = 'aem'
+    5) Restart libvirtd daemon with the following:
+        $ sudo systemctl restart libvirtd
+4) Configuring Virtual Machine Manager
+    1) Download virtio iso and Windows 10 iso:
+        $ sudo mkdir /var/lib/libirt/images/isos
+        $ sudo wget -cP /var/lib/libvirt/images/isos https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/stable-virtio/virtio-win.iso
+        $ sudo wget -cP /var/lib/libvirt/images/isos https://www.microsoft.com/software-download/windows10
+    2) Create VM in virt-manager
+        1) Choose Win10.iso
+        2) Create virtuual storage file
+        3) Set memory and CPU (Leave at least 1-3 GiB to host machine)
+        4) Ensure that VM is named 'win10'
+        5) Customize configuration before install
+            1) Overview > Chipset: Q35
+            2) Overview > UEFI Firmware: /usr/share/OVMF/OVMF_Code_4M.fd
+            3) CPUs > Check: Copy host CPU configuration
+            4) Topology > Manually set CPU topology > Match CPU Configs
+                $ lscpu | egrep 'Model name|Socket|Thread|NUMA|CPU\(s\)'
+            5) Disk 1 > Disk Bus: VirtIO
+            6) Disk 1 > Advanced options > Cache mode: writeback
+            7) Boot Options > Check SATA CDROM 1
+            8) Boot Options > First position should have the CD drive with Win10 iso checked, second should have VirtIO Disk 1 checked, NIC should not be checked
+            9) Add Hardware > Storage > Device type: CDROM device, Bus type: SATA
+                Select virtio iso as custom storage
+            10) NIC > Network source: Virtual network 'default': NAT
+                Can set Device model to virtio, but will not be able to immediate download latest windows update for a first proper idsplay output
+            11) Begin Installation
+        6) Install Windows 10
+            1) Drive Selection > Load Driver > Find CD drive containing virtio drivers and navigate to \amd64\w10
+                1) CD Drive (E:) > amd64 > w10
+                2) Select Red Hat VirtIO SCSI controller
+                3) Drive should appear normally
+5) Preparation and placing of the ROM file
+    1) 
+
+
+

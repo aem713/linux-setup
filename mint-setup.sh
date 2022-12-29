@@ -50,21 +50,21 @@ sudo auto-cpufreq --install
 cd ..
 
 # 12) Set up QEMU-KVM
-if [ $(egrep -c '(vmx|svm)' /proc/cpuinfo) -gt 0 ]; then
-    sudo nala install -y qemu-kvm qemu-system qemu-utils python3 python3-pip libvirt-clients libvirt-daemon-system bridge-utils virtinst libvirt-daemon virt-manager
-    sudo virsh net-start default
-    sudo virsh net-autostart default
-    sudo virsh net-list --all
-    newgrp libvirt # Allows user to join libvirt group without logout
-    sudo usermod -aG libvirt $USER
-    sudo usermod -aG libvirt-qemu $USER
-    sudo usermod -aG kvm $USER
-    sudo usermod -aG input $USER
-    sudo usermod -aG disk $USER
-    # Also set up VM via virsh
-else
-    echo "Virtualization is not enabled in UEFI"
-fi
+#if [ $(egrep -c '(vmx|svm)' /proc/cpuinfo) -gt 0 ]; then
+#    sudo nala install -y qemu-kvm qemu-system qemu-utils python3 python3-pip libvirt-clients libvirt-daemon-system bridge-utils virtinst libvirt-daemon virt-manager
+#    sudo virsh net-start default
+#    sudo virsh net-autostart default
+#    sudo virsh net-list --all
+#    newgrp libvirt # Allows user to join libvirt group without logout
+#    sudo usermod -aG libvirt $USER
+#    sudo usermod -aG libvirt-qemu $USER
+#    sudo usermod -aG kvm $USER
+#    sudo usermod -aG input $USER
+#    sudo usermod -aG disk $USER
+#    # Also set up VM via virsh
+#else
+#    echo "Virtualization is not enabled in UEFI"
+#fi
 
 sudo mkdir /var/lib/libirt/images/isos
 sudo wget -cP /var/lib/libvirt/images/isos https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/stable-virtio/virtio-win.iso
