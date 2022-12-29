@@ -21,7 +21,7 @@ sudo nala upgrade -y
 mkdir ~/work
 
 # 7) Install all needed packages
-sudo nala install -y vim neofetch v4l2loopback-dkms ffmpeg obs-studio gimp shotcut spotify-client git gnuradio gparted
+sudo nala install -y vim neofetch v4l2loopback-dkms ffmpeg obs-studio gimp shotcut spotify-client git gnuradio gparted hwloc
 
 # 8) Download all needed .deb files
 wget -c --content-disposition -i deb.txt
@@ -57,6 +57,27 @@ if [ $(egrep -c '(vmx|svm)' /proc/cpuinfo) -gt 0 ]; then
     sudo usermod -aG kvm $USER
     sudo usermod -aG input $USER
     sudo usermod -aG disk $USER
+    # Also set up VM via virsh
 else
     echo "Virtualization is not enabled in UEFI"
 fi
+
+# Future script for automated creation of the VM
+# Download hwloc
+# lstopo will show the map of CPUs
+# virsh vcpuinfo win10 will show the cpu info of the VM
+# virsh edit win10
+#   Under <vcpu placement='static'>14</vcpu> , write:
+#   <iothreads>1</iothreads>
+#   <cputune>
+#       <vcpupin vcpu='0' cpuset='2'/>
+#       <vcpupin vcpu='1' cpuset='3'/>
+#       <vcpupin vcpu='2' cpuset='4'/>
+#       <vcpupin vcpu='3' cpuset='5'/>
+#       <vcpupin vcpu='4' cpuset='6'/>
+#       <vcpupin vcpu='5' cpuset='7'/>
+#       <emulatorpin ccpuset='0-1'/>
+#       <iothreadpin iothread='1' cpuset='0-1'/> 
+#   </cputune>
+#
+# Alternatively can do <vcpu placement='static' cpuset='6-11'>14</vcpu>
