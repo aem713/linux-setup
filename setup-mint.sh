@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Linux Mint settings
-#   1) Set fractional scaling (Doesn't work)
+# Linux Mint settings (maybe have flags based on what distro I'm using)
+#   1) Set fractional scaling to 125% (Doesn't work) 
 #       xrandr --listmonitors
 #       xrandr --output <monitor name> --scale 0.80x0.80
 #   2) Increase Trackpad speed (I don't care) 
