@@ -17,25 +17,22 @@ printf '1 2 3 4\ny\n' | sudo nala fetch
 # 5) Update and Upgrade system
 sudo nala upgrade -y
 
-# 6) Create work directory
-mkdir ~/work
-
-# 7) Install all needed packages
+# 6) Install all needed packages
 sudo nala install -y vim neofetch v4l2loopback-dkms ffmpeg obs-studio gimp shotcut spotify-client git gnuradio gparted hwloc
 
-# 8) Download all needed .deb files
+# 7) Download all needed .deb files
 wget -c --content-disposition -i deb.txt
 
-# 9) Install all .deb files
+# 8) Install all .deb files
 for file in *.deb; do
     [ -f "$file" ] || continue
     sudo gdebi $file --n;
 done
 
-# 10) Delete all .deb files
+# 9) Delete all .deb files
 rm *.deb
 
-# 11) Create .bash_aliases file
+# 10) Create .bash_aliases file
 if [ -e ~/.bash_aliases ]; then
     echo "File ~/.bash_aliases already exists!"
 else
@@ -46,12 +43,19 @@ ck () { cd $@ && clear && ls; }
 EOF
 fi
 
+# 11) Install auto-cpufreq
+git clone https://github.com/Adnan Hodzic/auto-cpufreq.git
+cd auto-cpufreq && printf 'i\n' | sudo ./auto-cpufreq-installer
+sudo auto-cpufreq --install
+cd ..
+
 # 12) Set up QEMU-KVM
 if [ $(egrep -c '(vmx|svm)' /proc/cpuinfo) -gt 0 ]; then
     sudo nala install -y qemu-kvm qemu-system qemu-utils python3 python3-pip libvirt-clients libvirt-daemon-system bridge-utils virtinst libvirt-daemon virt-manager
     sudo virsh net-start default
     sudo virsh net-autostart default
     sudo virsh net-list --all
+    newgrp libvirt # Allows user to join libvirt group without logout
     sudo usermod -aG libvirt $USER
     sudo usermod -aG libvirt-qemu $USER
     sudo usermod -aG kvm $USER
@@ -62,6 +66,8 @@ else
     echo "Virtualization is not enabled in UEFI"
 fi
 
+sudo mkdir /var/lib/libirt/images/isos
+sudo wget -cP /var/lib/libvirt/images/isos https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/stable-virtio/virtio-win.iso
 # Future script for automated creation of the VM
 # Download hwloc
 # lstopo will show the map of CPUs
