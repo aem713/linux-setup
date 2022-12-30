@@ -44,7 +44,7 @@ EOF
 fi
 
 # 11) Install auto-cpufreq
-git clone https://github.com/Adnan Hodzic/auto-cpufreq.git
+git clone https://github.com/AdnanHodzic/auto-cpufreq.git
 cd auto-cpufreq && printf 'i\n' | sudo ./auto-cpufreq-installer
 sudo auto-cpufreq --install
 cd ..
