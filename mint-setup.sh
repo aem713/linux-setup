@@ -12,7 +12,8 @@
 
 # 4) Install and set up Nala
 sudo apt install nala -y
-printf '1\ny\n' | sudo nala fetch
+#printf '1\ny\n' | sudo nala fetch
+sudo nala fetch
 
 # 5) Update and Upgrade system
 sudo nala upgrade -y
