@@ -68,6 +68,8 @@ cd ..
 
 sudo mkdir /var/lib/libirt/images/isos
 sudo wget -cP /var/lib/libvirt/images/isos https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/stable-virtio/virtio-win.iso
+sudo wget -cP /var/lib/libvirt/images/isos https://software.download.prss.microsoft.com/dbazure/Win10_22H2_English_x64.iso?t=7ba00706-ef7a-4923-8f53-bd4b65fc75aa&e=1672445294&h=1ac5458900406bdd047d283039b3a18a2dc574e2583d49cf8f01a2ec373daf26
+
 # Future script for automated creation of the VM
 # Download hwloc
 # lstopo will show the map of CPUs
