@@ -11,15 +11,15 @@
 #   1) Install UBlock Origin and Video Speed Controller (And change VSC settings)
 
 # 4) Install and set up Nala
-sudo apt install nala -y
+#sudo apt install nala -y
 #printf '1\ny\n' | sudo nala fetch
-sudo nala fetch
+#sudo nala fetch
 
 # 5) Update and Upgrade system
-sudo nala upgrade -y
+#sudo nala upgrade -y
 
 # 6) Install all needed packages
-sudo nala install -y vim v4l2loopback-dkms ffmpeg obs-studio gimp shotcut spotify-client gnuradio gparted hwloc
+sudo apt install -y vim git v4l2loopback-dkms ffmpeg obs-studio neofetch gimp shotcut spotify-client gnuradio gparted hwloc
 
 # 7) Download all needed .deb files
 wget -c --content-disposition -i deb.txt
