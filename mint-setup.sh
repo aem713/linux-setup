@@ -11,12 +11,12 @@
 #   1) Install UBlock Origin and Video Speed Controller (And change VSC settings)
 
 # 4) Install and set up Nala
-#sudo apt install nala -y
-#printf '1\ny\n' | sudo nala fetch
-#sudo nala fetch
+sudo apt install nala -y
+printf '1\ny\n' | sudo nala fetch
+sudo nala fetch
 
 # 5) Update and Upgrade system
-#sudo nala upgrade -y
+sudo nala upgrade -y
 
 # 6) Install all needed packages
 sudo apt install -y vim git v4l2loopback-dkms ffmpeg obs-studio neofetch gimp shotcut spotify-client gnuradio gparted hwloc
@@ -32,6 +32,9 @@ done
 
 # 9) Delete all .deb files
 rm *.deb
+
+#10) Install VS Code Extensions
+code --install-extension jdinhlife.gruvbox
 
 # 10) Create .bash_aliases file
 if [ -e ~/.bash_aliases ]; then
@@ -69,8 +72,8 @@ else
     echo "Virtualization is not enabled in UEFI"
 fi
 
-sudo mkdir /var/lib/libirt/images/isos
-sudo cp /media/*/*/Windows10-22H2.iso /media/*/*/virtio-win.iso /var/lib/libvirt/images/isos
+sudo mkdir /var/lib/libvirt/images/isos
+#sudo cp /media/*/*/Windows10-22H2.iso /media/*/*/virtio-win.iso /var/lib/libvirt/images/isos
 #sudo wget -cP /var/lib/libvirt/images/isos https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/stable-virtio/virtio-win.iso
 #sudo wget -cP /var/lib/libvirt/images/isos https://software.download.prss.microsoft.com/dbazure/Win10_22H2_English_x64.iso?t=7ba00706-ef7a-4923-8f53-bd4b65fc75aa&e=1672445294&h=1ac5458900406bdd047d283039b3a18a2dc574e2583d49cf8f01a2ec373daf26
 
