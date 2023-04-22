@@ -13,17 +13,16 @@
 # 4) Install and set up Nala
 sudo apt install nala -y
 #printf '1\ny\n' | sudo nala fetch
-sudo nala fetch
-sudo nala fetch
+#sudo nala fetch
 
 # 5) Update and Upgrade system
-sudo nala upgrade -y
+#sudo nala upgrade -y
 
 # 6) Install all needed packages
-sudo apt install -y vim git v4l2loopback-dkms ffmpeg obs-studio neofetch gimp shotcut spotify-client gnuradio gparted hwloc playerctl matlab-support
+sudo apt install -y vim git v4l2loopback-dkms ffmpeg obs-studio neofetch gimp shotcut spotify-client gnuradio gparted hwloc
 
 # 7) Download all needed .deb files
-wget -c --content-disposition -i deb.txt
+#wget -c --content-disposition -i deb.txt
 
 # 8) Install all .deb files
 for file in *.deb; do
@@ -35,18 +34,9 @@ done
 rm *.deb
 
 #10) Install VS Code Extensions
-code --install-extension jdinhlife.gruvbox ms-python.python ms-vscode.cpptools
+code --install-extension jdinhlife.gruvbox
 
 # 10) Create .bash_aliases file
-if [ -e ~/.bash_aliases ]; then
-    echo "File ~/.bash_aliases already exists!"
-else
-    cat << 'EOF' > ~/.bash_aliases
-:() { clear $@ && pwd && ls; }
-cl() { cd $@ && ls; }
-ck () { cd $@ && clear && ls; }
-EOF
-fi
 
 # 11) Install auto-cpufreq
 cd ..
