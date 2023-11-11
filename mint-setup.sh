@@ -14,13 +14,14 @@
 sudo apt install nala -y
 #printf '1\ny\n' | sudo nala fetch
 sudo nala fetch
-sudo nala fetch
 
 # 5) Update and Upgrade system
 sudo nala upgrade -y
 
 # 6) Install all needed packages
-sudo apt install -y vim git v4l2loopback-dkms ffmpeg obs-studio neofetch gimp shotcut spotify-client gnuradio gparted hwloc playerctl matlab-support
+sudo apt install -y vim git v4l2loopback-dkms ffmpeg obs-studio neofetch gimp shotcut spotify-client gnuradio gparted hwloc playerctl matlab-support meld
+
+# install localsend
 
 # 7) Download all needed .deb files
 wget -c --content-disposition -i deb.txt
@@ -33,6 +34,9 @@ done
 
 # 9) Delete all .deb files
 rm *.deb
+
+# 10) Install GitHub Desktop Via Script
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/kontr0x/github-desktop-install/main/installGitHubDesktop.sh)"
 
 #10) Install VS Code Extensions
 code --install-extension jdinhlife.gruvbox ms-python.python ms-vscode.cpptools
