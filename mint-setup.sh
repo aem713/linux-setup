@@ -10,18 +10,18 @@
 # Firefox Settings
 #   1) Install UBlock Origin and Video Speed Controller (And change VSC settings)
 
-# 4) Install and set up Nala
-sudo apt install nala -y
-#printf '1\ny\n' | sudo nala fetch
-sudo nala fetch
-
-# 5) Update and Upgrade system
-sudo nala upgrade -y
-
 # 6) Install all needed packages
-sudo apt install -y vim git v4l2loopback-dkms ffmpeg obs-studio neofetch gimp shotcut spotify-client gnuradio gparted hwloc playerctl matlab-support meld
+sudo apt install -y vim git v4l2loopback-dkms ffmpeg obs-studio neofetch gimp shotcut spotify-client gnuradio gparted hwloc playerctl meld qbittorrent apt-transport-https
 
-# install localsend
+# apt-transport-https is for Tor
+
+# install localsend matlab-support
+
+# 6) Install Flatpaks
+flatpak install -y flathub io.freetubeapp.FreeTube
+flatpak install -y flathub com.github.micahflee.torbrowser-launcher
+flatpak install -y flathub net.mullvad.MullvadBrowser
+flatpak install -y flathub org.keepassxc.KeePassXC
 
 # 7) Download all needed .deb files
 wget -c --content-disposition -i deb.txt
